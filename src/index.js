@@ -21,7 +21,7 @@ export default function pathResolve(opts = {}) {
 
             let fullPath = path.resolve(pth, source);
 
-            let stat = await fsstat(fullPath).catch(err => null);
+            let stat = await fsstat(fullPath).catch(() => null);
 
             if (stat) {
 
@@ -32,7 +32,7 @@ export default function pathResolve(opts = {}) {
                 if(stat.isDirectory()) {
                     // does it have an index.js ?
                     let indexPath = path.join(fullPath, 'index.js');
-                    stat = await fsstat(indexPath).catch(err => null);
+                    stat = await fsstat(indexPath).catch(() => null);
 
                     if (!stat) return null;
 
@@ -45,7 +45,7 @@ export default function pathResolve(opts = {}) {
 
                 fullPath = `${fullPath}.js`;
             
-                stat = await fsstat(fullPath).catch(err => null);
+                stat = await fsstat(fullPath).catch(() => null);
 
                 if(stat && stat.isFile()) return fullPath;
             }
@@ -57,7 +57,7 @@ export default function pathResolve(opts = {}) {
         cache.clear();
     }
 
-    async function resolveId(source, importer) {
+    async function resolveId(source) {
         // check in cache first
         const entry = cache.get(source);
 
@@ -67,7 +67,7 @@ export default function pathResolve(opts = {}) {
         if (/\0/.test(source)) return null;
 
         // if it starts with a '@', a '/', or a '.', it's not for us.
-        if (/^[@\/\.]/.test(source)) return null;
+        if (/^[@/.]/.test(source)) return null;
 
         const path = await findFile(source);
 

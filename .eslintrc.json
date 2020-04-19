@@ -4,6 +4,13 @@
     "sourceType": "module"
   },
   "env": {
-    "node": true
+    "node": true,
+    "es2020": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "rules": {
+    "require-atomic-updates": "error"
   }
 }
