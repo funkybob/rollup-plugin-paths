@@ -1,3 +1,4 @@
+import { terser } from 'rollup-plugin-terser';
 
 export default {
   input: "src/index.js",
@@ -5,5 +6,8 @@ export default {
     file: "index.js",
     format: "cjs",
   },
-  plugins: [],
+  plugins: [
+    terser(),
+  ],
+  external: ['path', 'fs', 'util',],
 }
