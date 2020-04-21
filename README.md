@@ -1,4 +1,4 @@
-# rollup-plugin-paths
+# rollup-plugin-searchpaths
 
 A Rollup plugin to add additional search paths for imports.
 
@@ -7,7 +7,7 @@ A Rollup plugin to add additional search paths for imports.
 Using npm:
 
 ```console
-npm install rollup-plugin-paths
+npm install rollup-plugin-searchpaths
 ```
 
 ## Usage
@@ -15,12 +15,12 @@ npm install rollup-plugin-paths
 In your `rollup.config.js` :
 
 ```js
-import paths from 'rollup-plugin-paths'
+import searchpaths from 'rollup-plugin-searchpaths'
 
 export default {
     ...
     plugins: [
-        paths({
+        searchpaths({
             paths: ['app/', '../common/'],
             extensions: ['ts', 'jsx', 'jsx'],
         }),
