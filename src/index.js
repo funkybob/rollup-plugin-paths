@@ -41,7 +41,7 @@ export default function pathResolve(opts = {}) {
             const stat = await fsstat(resolvedPath).catch(() => null);
             if (stat && stat.isFile()) return resolvedPath;
 
-            const fullName = resolveExtension(resolvedPath);
+            const fullName = await resolveExtension(resolvedPath);
             if (fullName) return fullName;
 
             if (stat && stat.isDirectory()) {
