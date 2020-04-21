@@ -6,48 +6,47 @@ const fsstat = promisify(fs.stat);
 
 const defaultOptions = {
     paths: [],
+    extensions: ['js'],
 };
 
 export default function pathResolve(opts = {}) {
     const options = Object.assign({}, defaultOptions, opts);
-    let { paths } = options;
+    let { paths, extensions } = options;
 
     paths = paths.map(p => path.resolve(p));
 
     const cache = new Map();
 
+    async function resolveExtension(fullPath) {
+        let stat = await fsstat(fullPath).catch(() => null);
+
+        if (stat && stat.isFile()) return fullPath;
+
+        if (path.extname(fullPath) !== '') return;
+
+        for(let ext of extensions) {
+            let extPath = `${fullPath}.${ext}`;
+            let extStat = await fsstat(extPath).catch(() => null);
+
+            if (extStat && extStat.isFile()) return extPath;
+        }
+
+    }
+
     async function findFile(source) {
         for(let pth of paths) {
 
-            let fullPath = path.resolve(pth, source);
+            const resolvedPath = path.resolve(pth, source);
 
-            let stat = await fsstat(fullPath).catch(() => null);
+            const stat = await fsstat(resolvedPath).catch(() => null);
+            if (stat && stat.isFile()) return resolvedPath;
 
-            if (stat) {
+            const fullName = resolveExtension(resolvedPath);
+            if (fullName) return fullName;
 
-                // it exists and is a file, we're done here.
-                if(stat.isFile()) return fullPath;
-
-                // it exists, but is a directory.
-                if(stat.isDirectory()) {
-                    // does it have an index.js ?
-                    let indexPath = path.join(fullPath, 'index.js');
-                    stat = await fsstat(indexPath).catch(() => null);
-
-                    if (!stat) return null;
-
-                    if (stat.isFile()) return indexPath;
-                }
-
-            } else {
-                // can we fix the extension?
-                if (path.extname(fullPath) !== '') return null;
-
-                fullPath = `${fullPath}.js`;
-            
-                stat = await fsstat(fullPath).catch(() => null);
-
-                if(stat && stat.isFile()) return fullPath;
+            if (stat && stat.isDirectory()) {
+                const indexName = resolveExtension(path.join(resolvedPath, 'index'));
+                if(indexName) return indexName;
             }
 
         }

@@ -7,7 +7,10 @@ export default {
     format: "cjs",
   },
   plugins: [
-    terser(),
+    terser({
+      ecma: 2016,
+      module: true,
+    }),
   ],
   external: ['path', 'fs', 'util',],
 }
