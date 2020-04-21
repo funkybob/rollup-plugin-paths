@@ -2,22 +2,29 @@ import { promisify } from 'util';
 import fs from 'fs';
 import path from 'path';
 
+type Nullable<T> = T | undefined | null;
+
+interface Options {
+  paths: string[],
+  extensions: string[],
+};
+
 const fsstat = promisify(fs.stat);
 
-const defaultOptions = {
+const defaultOptions: Options = {
     paths: [],
     extensions: ['js'],
 };
 
 export default function pathResolve(opts = {}) {
-    const options = Object.assign({}, defaultOptions, opts);
+    const options: Options = Object.assign({}, defaultOptions, opts);
     let { paths, extensions } = options;
 
-    paths = paths.map(p => path.resolve(p));
+    paths = paths.map((p: string) => path.resolve(p)) as string[];
 
     const cache = new Map();
 
-    async function resolveExtension(fullPath) {
+    async function resolveExtension(fullPath: string): Promise<Nullable<string>> {
         let stat = await fsstat(fullPath).catch(() => null);
 
         if (stat && stat.isFile()) return fullPath;
@@ -31,9 +38,10 @@ export default function pathResolve(opts = {}) {
             if (extStat && extStat.isFile()) return extPath;
         }
 
+        return null;
     }
 
-    async function findFile(source) {
+    async function findFile(source: string): Promise<Nullable<string>> {
         for(let pth of paths) {
 
             const resolvedPath = path.resolve(pth, source);
@@ -50,13 +58,14 @@ export default function pathResolve(opts = {}) {
             }
 
         }
+        return null;
     }
 
     function generateBundle() {
         cache.clear();
     }
 
-    async function resolveId(source) {
+    async function resolveId(source: string): Promise<Nullable<string>> {
         // check in cache first
         const entry = cache.get(source);
 

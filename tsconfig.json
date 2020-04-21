@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+      "alwaysStrict": true,
+      "experimentalDecorators": true,
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "moduleResolution": "node",
+      "noEmitOnError": false,
+      "strict": true,
+      "sourceMap": true,
+      "lib":[
+        "es2015"
+      ],
+      "rootDir": "src",
+      "baseUrl": "src",
+      "outDir": "dist",
+      "rootDirs": [
+        "src"
+      ],
+      "noUnusedLocals": true,
+      "noImplicitThis": true,
+      "noImplicitReturns": true,
+      "noUnusedParameters": false,
+      "pretty": true,
+      "preserveConstEnums": true,
+      "stripInternal": true,
+      "target": "esnext",
+      "typeRoots": [
+          "node_modules/@types",
+          "src/types"
+      ]
+  },
+  "include": [
+    "src/**/index.ts",
+    "src/cli.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compileOnSave": true
+}
