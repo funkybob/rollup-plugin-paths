@@ -2,6 +2,11 @@
 
 A Rollup plugin to add additional search paths for imports.
 
+## Overview
+
+Any imports from files that don't start with '.' or '/' will be searched for in
+the provided list of paths.
+
 ## Install
 
 Using npm:
@@ -38,7 +43,6 @@ Default: `[]`
 A list of paths to search for packages.
 
 The list will be normalised and resolved relative to the current path.
-
 
 ### `extensions`
 
