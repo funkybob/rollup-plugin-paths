@@ -27,7 +27,7 @@ export default {
     plugins: [
         searchpaths({
             paths: ['app/', '../common/'],
-            extensions: ['ts', 'jsx', 'jsx'],
+            extensions: ['ts', 'js', 'jsx'],
         }),
     ],
 }
