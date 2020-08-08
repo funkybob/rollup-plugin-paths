@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-searchpaths",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Search paths for Rollup",
   "main": "index.js",
   "module": "index.es.js",
